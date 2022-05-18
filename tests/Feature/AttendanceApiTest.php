@@ -4,15 +4,20 @@ namespace Tests\Feature;
 
 use App\Events\EmployeeAttendanceRecordedEvent;
 use App\Jobs\SendEmployeeAttendanceMailJob;
+use App\Listeners\SendEmailEmployeeAttendanceNotification;
 use App\Models\Employee;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Event;
 
 class AttendanceApiTest extends TestCase
 {
 
     use  WithoutMiddleware, DatabaseTransactions;
+
+
 
     /**
      * @test
@@ -20,8 +25,11 @@ class AttendanceApiTest extends TestCase
     public function test_assign_arrival_attendance_employee()
     {
 
-        $this->expectsEvents([EmployeeAttendanceRecordedEvent::class]);
-        // $this->expectsJobs([SendEmployeeAttendanceMailJob::class]);
+        Bus::fake();
+
+        Event::fake();
+
+
 
         $manager = Employee::manager()->active()->first();
 
@@ -39,6 +47,10 @@ class AttendanceApiTest extends TestCase
                 "status" => 200,
                 "message" => "Attendance successfully registered",
             ]);
+
+        Event::assertDispatched(EmployeeAttendanceRecordedEvent::class);
+
+        // Bus::assertDispatched(SendEmployeeAttendanceMailJob::class);
     }
 
 
