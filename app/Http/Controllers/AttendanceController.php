@@ -10,6 +10,7 @@ use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Support\Str;
@@ -176,12 +177,18 @@ class AttendanceController extends Controller
         $random_uuid =  Str::uuid();
         $fileName = "export_{$from}_{$to}_{$random_uuid}.xlsx";
 
-        $writer->save("storage/reports/{$fileName}");
+        $path = "storage/reports";
+
+        if (!File::exists("{$path}")) {
+            File::makeDirectory("{$path}", 0777, true, true);
+        }
+
+        $writer->save("{$path}/{$fileName}");
 
         return Response::json([
             "status" => 200,
             "data" => [
-                "link" => url("storage/reports/{$fileName}")
+                "link" => url("{$path}/{$fileName}")
             ]
         ]);
     }
