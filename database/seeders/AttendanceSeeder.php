@@ -48,7 +48,6 @@ class AttendanceSeeder extends Seeder
 
         $arrived_at = Carbon::parse($faker->dateTime(now()->addDay()));
         $arrived_at->year(today()->year);
-        // $arrived_at->month(today()->year);
         $timeJoin = $faker->randomElement(range(6, 12));
         $arrived_at->setHours($timeJoin);
 

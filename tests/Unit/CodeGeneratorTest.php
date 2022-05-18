@@ -35,6 +35,9 @@ class CodeGeneratorTest extends TestCase
     }
 
 
+    /**
+     * @test
+     */
     public function test_employee_id_generated()
     {
         $id = CodeGenerator::NATIONAL_ID();
@@ -50,6 +53,9 @@ class CodeGeneratorTest extends TestCase
         assertFalse($validator->fails(), "Invalid national id generated");
     }
 
+    /**
+     * @test
+     */
     public function test_employee_rwanda_phone_generated()
     {
         $id = CodeGenerator::PHONE_NUMBER();
