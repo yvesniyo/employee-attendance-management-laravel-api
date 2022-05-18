@@ -1,7 +1,11 @@
 <?php
 
+use App\Models\Employee;
+use App\Services\CodeGenerator;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateEmployeeTable extends Migration
@@ -28,6 +32,18 @@ class CreateEmployeeTable extends Migration
             $table->enum("position", ["MANAGER", "DEVELOPER", "DESIGNER", "TESTER", "DEVOPS"]);
             $table->timestamps();
         });
+
+
+        DB::table("employees")->insert([
+            "code" => CodeGenerator::EMPLOYEE(),
+            "national_id" => CodeGenerator::NATIONAL_ID(),
+            "name" => "Manager",
+            "email" => "admin@example.com",
+            "status" => "ACTIVE",
+            "position" => "MANAGER",
+            "password" => bcrypt("password"),
+            "dob" => Carbon::now()->subYears(20)
+        ]);
     }
 
     /**
