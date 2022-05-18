@@ -46,23 +46,18 @@ class ManagerApiTest extends TestCase
      */
     public function test_update_employee()
     {
-        $employee_data = Employee::factory()->make()->toArray();
+        $employee_update_data = Employee::factory()->make()->toArray();
 
-        $employee_data["dob"] = Carbon::now()
+        $employee_update_data["dob"] = Carbon::now()
             ->subYears(mt_rand(18, 30))
             ->format("Y-m-d");
-
-        unset($employee_data["code"]);
-
-        $employee_update_data = $employee_data;
+        unset($employee_update_data["code"]);
 
         $employee_to_update = Employee::all()->random();
 
         $manager = Employee::manager()
             ->active()
             ->first();
-
-
         $this->actingAs($manager)
             ->json(
                 'PATCH',
@@ -76,6 +71,14 @@ class ManagerApiTest extends TestCase
 
 
         $updatedEmployee = Employee::find($employee_to_update->id);
+
+        $this->assertEquals($employee_update_data["status"], $updatedEmployee->status);
+        $this->assertEquals($employee_update_data["name"], $updatedEmployee->name);
+        $this->assertEquals($employee_update_data["email"], $updatedEmployee->email);
+        $this->assertEquals($employee_update_data["dob"], $updatedEmployee->dob);
+        $this->assertEquals($employee_update_data["national_id"], $updatedEmployee->national_id);
+        $this->assertEquals($employee_update_data["phone"], $updatedEmployee->phone);
+        $this->assertEquals($employee_update_data["position"], $updatedEmployee->position);
     }
 
 

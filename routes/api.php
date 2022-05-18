@@ -35,7 +35,7 @@ Route::group(["prefix" => "/v1"], function () {
 
     Route::get('/', function () {
         return API_NAME;
-    });
+    })->name("api-root");
 
 
     Route::group(["prefix" => "auth"], function () {
