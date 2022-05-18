@@ -111,6 +111,7 @@ class AuthController extends Controller
         $employeeDetails["password"] = Hash::make($request->password);
 
         $employeeDetails["code"] = CodeGenerator::EMPLOYEE();
+        $employeeDetails["dob"] = Carbon::parse($employeeDetails["dob"])->format('Y-m-d');
 
         /** @var \App\Models\Employee */
         $employee = Employee::create($employeeDetails);
