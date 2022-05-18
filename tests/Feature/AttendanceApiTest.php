@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
 
 class AttendanceApiTest extends TestCase
 {
@@ -166,5 +167,25 @@ class AttendanceApiTest extends TestCase
             )->assertJson([
                 "status" => 200,
             ]);
+    }
+
+
+    /**
+     * @test
+     */
+    public  function test_export_attendances()
+    {
+        $manager = Employee::manager()->active()->first();
+
+        $from = now()->format("Y-m-d");
+        $to = now()->format("Y-m-d");
+
+        Storage::fake('public');
+
+        $response =  $this->actingAs($manager)
+            ->json(
+                "GET",
+                route("exportAttendance", ["from" => $from, "to" => $to]),
+            );
     }
 }

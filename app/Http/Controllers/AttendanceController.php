@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Str;
 
 class AttendanceController extends Controller
 {
@@ -167,15 +168,21 @@ class AttendanceController extends Controller
             foreach ($columns as $keyColumn => $column) {
                 $sheet->setCellValue($letters[$keyColumn] . $row, $attendance[$keyColumn]);
             }
-
             $row++;
         }
 
         $writer = new Xlsx($spreadsheet);
 
-        $fileName = "export_{$from}_{$to}.xlsx";
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . urlencode($fileName) . '"');
-        $writer->save('php://output');
+        $random_uuid =  Str::uuid();
+        $fileName = "export_{$from}_{$to}_{$random_uuid}.xlsx";
+
+        $writer->save("storage/reports/{$fileName}");
+
+        return Response::json([
+            "status" => 200,
+            "data" => [
+                "link" => url("storage/reports/{$fileName}")
+            ]
+        ]);
     }
 }

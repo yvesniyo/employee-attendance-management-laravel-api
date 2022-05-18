@@ -58,7 +58,7 @@ Route::group(["prefix" => "/v1"], function () {
 
 
     Route::get("get-attendances", [AttendanceController::class, "getAttendance"])->name("attendances");
-    Route::get("exportAttendance", [AttendanceController::class, "exportAttendance"]);
+    Route::get("exportAttendance", [AttendanceController::class, "exportAttendance"])->name("exportAttendance");
 
 
     Route::group(["prefix" => "employees", "middleware" => "auth:sanctum"], function () {
