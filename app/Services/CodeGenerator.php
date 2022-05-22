@@ -9,10 +9,14 @@ class CodeGenerator
 {
 
 
-    public static function EMPLOYEE(): string
+    public static function EMPLOYEE($check_db = true): string
     {
         $text = "123456789";
         $code = "EMP" . substr(str_shuffle($text), 1, 4);
+
+        if (!$check_db) {
+            return $code;
+        }
 
         while (Employee::code($code)
             ->exists()

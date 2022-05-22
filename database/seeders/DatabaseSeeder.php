@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Employee::factory(100)->create();
         $this->call([
+            EmployeeSeeder::class,
             AttendanceSeeder::class
         ]);
     }
