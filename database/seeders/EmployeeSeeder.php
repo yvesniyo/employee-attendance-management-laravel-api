@@ -15,7 +15,7 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
-        $numberToCreate = 100;
+        $numberToCreate = 50;
 
         $employeeCodes = collect([]);
 

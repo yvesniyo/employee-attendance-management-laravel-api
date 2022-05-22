@@ -37,8 +37,11 @@ function genereateFakeAttendance()
     $left_at = $arrived_at->copy();
     $left_at->hours($timeJoin + $faker->randomElement(range(1, 9)));
 
+    //make 70% chances of having null on left_at
+    $chance = $faker->randomElement(range(0, 100));
+
     return [
         "arrived_at" => $arrived_at,
-        "left_at" => $left_at,
+        "left_at" => ($chance >= 30) ? $left_at  :  null,
     ];
 }

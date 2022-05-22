@@ -22,13 +22,13 @@ class AttendanceSeeder extends Seeder
 
         $dates = collect([]);
 
-        for ($i = 0; $i < 10000; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $dates->add(genereateFakeAttendance());
         }
 
 
         Attendance::factory()
-            ->count(7000)
+            ->count(600)
             ->sequence(function ($data) use ($employees, $dates) {
                 $date = $dates->random();
 
